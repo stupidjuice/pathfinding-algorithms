@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad4bc4bdd2d21144190b9a157a14de80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridWidth: 101
+  gridWidth: 12
   gridHeight: 50
   unexploredColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   exploredColor: {r: 1, g: 0, b: 0, a: 1}
@@ -244,7 +244,7 @@ MonoBehaviour:
   pathColor: {r: 1, g: 0.68007255, b: 0, a: 1}
   squarePrefab: {fileID: 2968529830320815560, guid: cdc9207b7be91b34395fd818a9df8481, type: 3}
   cam: {fileID: 519420031}
-  extraOrthoScale: 1
+  extraOrthoScale: 0.075
 --- !u!4 &1146763031
 Transform:
   m_ObjectHideFlags: 0

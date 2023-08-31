@@ -47,8 +47,8 @@ public class GridManager : MonoBehaviour
         }
 
         //set orthographic scale so that the entire map fits within the camera view
-        if(gridHeight > gridWidth) { cam.orthographicSize = gridHeight / 2 + extraOrthoScale; }
-        else { cam.orthographicSize = gridWidth * (9f / 16f) / 2 + extraOrthoScale; }
+        if(gridHeight * cam.pixelWidth > gridWidth * cam.pixelHeight) { cam.orthographicSize = gridHeight / 2 + extraOrthoScale * gridHeight; }
+        else { cam.orthographicSize = gridWidth * (9f / 16f) / 2 + extraOrthoScale * gridWidth; }
     }
 
     public List<Node> GetNeighbors(Node node)
