@@ -17,8 +17,10 @@ public class GridManager : MonoBehaviour
     }
 
     public Node[,] currentGrid;
-    public GameObject squarePrefab;
     public SpriteRenderer[,] squareRenderers;
+    public GameObject squarePrefab;
+    public GameObject linePrefab;
+    public float lineWidth;
     public Camera cam;
     public float extraOrthoScale = 1.0f;
 
@@ -34,6 +36,7 @@ public class GridManager : MonoBehaviour
 
         currentGrid = new Node[gridWidth, gridHeight];
         squareRenderers = new SpriteRenderer[gridWidth, gridHeight];
+
         for(int i = 0; i < gridWidth; i++)
         {
             for(int j = 0; j < gridHeight; j++)
@@ -46,9 +49,20 @@ public class GridManager : MonoBehaviour
             }
         }
 
+        for(int i = 0; i < gridWidth + 1; i++)
+        {
+            Transform currentLine = Instantiate(linePrefab, new Vector3(i - offsetX - 0.5f, 0f, -2f), Quaternion.identity).transform;
+            currentLine.localScale = new Vector3(lineWidth, gridHeight, 1f);
+        }
+        for (int i = 0; i < gridHeight + 1; i++)
+        {
+            Transform currentLine = Instantiate(linePrefab, new Vector3(0f, i - offsetY - 0.5f, -2f), Quaternion.identity).transform;
+            currentLine.localScale = new Vector3(gridWidth, lineWidth, 1f);
+        }
+
         //set orthographic scale so that the entire map fits within the camera view
-        if(gridHeight * cam.pixelWidth > gridWidth * cam.pixelHeight) { cam.orthographicSize = gridHeight / 2 + extraOrthoScale * gridHeight; }
-        else { cam.orthographicSize = gridWidth * (9f / 16f) / 2 + extraOrthoScale * gridWidth; }
+        if (gridHeight * cam.pixelWidth > gridWidth * cam.pixelHeight) { cam.orthographicSize = gridHeight / 2 + extraOrthoScale * gridHeight; }
+        else { cam.orthographicSize = gridWidth * (cam.pixelHeight / cam.pixelWidth) / 2 + extraOrthoScale * gridWidth; }
     }
 
     public List<Node> GetNeighbors(Node node)

@@ -186,7 +186,7 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 0
   m_HDR: 1
-  m_AllowMSAA: 0
+  m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 0
@@ -218,7 +218,7 @@ GameObject:
   - component: {fileID: 1146763031}
   - component: {fileID: 1146763030}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Grid Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -236,13 +236,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad4bc4bdd2d21144190b9a157a14de80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridWidth: 12
+  gridWidth: 50
   gridHeight: 50
   unexploredColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   exploredColor: {r: 1, g: 0, b: 0, a: 1}
   obstacleColor: {r: 0, g: 0, b: 0, a: 1}
   pathColor: {r: 1, g: 0.68007255, b: 0, a: 1}
   squarePrefab: {fileID: 2968529830320815560, guid: cdc9207b7be91b34395fd818a9df8481, type: 3}
+  linePrefab: {fileID: 8380517522867123069, guid: 5b03895fcd33b5d419f95045cc13a666, type: 3}
+  lineWidth: 0.1
   cam: {fileID: 519420031}
   extraOrthoScale: 0.075
 --- !u!4 &1146763031
