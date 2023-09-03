@@ -6,7 +6,7 @@ public class GridManager : MonoBehaviour
 {
     public int gridWidth;
     public int gridHeight;
-    public Color unexploredColor, exploredColor, obstacleColor, pathColor;
+    public Color unexploredColor, exploredColor, obstacleColor, pathColor, rootColor, goalColor;
     public Dictionary<NodeType, Color> gridColors;
     public enum NodeType
     {
@@ -14,6 +14,15 @@ public class GridManager : MonoBehaviour
         Explored,
         Obstacle,
         Path,
+        Root,
+        Goal
+    }
+
+    public struct NodeInfo
+    {
+        public float hCost;
+        public float gCost;
+        public float fCost;
     }
 
     public Node[,] currentGrid;
@@ -28,10 +37,10 @@ public class GridManager : MonoBehaviour
     {
         //get offsets so the grid is centered at (0, 0)
         float offsetX, offsetY;
-        if (gridWidth % 2 == 0) { offsetX = gridWidth / 2 - 0.5f; }
+        if(gridWidth % 2 == 0) { offsetX = gridWidth / 2 - 0.5f; }
         else { offsetX = gridWidth / 2; }
 
-        if (gridHeight % 2 == 0) { offsetY = gridHeight / 2 - 0.5f; }
+        if(gridHeight % 2 == 0) { offsetY = gridHeight / 2 - 0.5f; }
         else { offsetY = gridHeight / 2; }
 
         currentGrid = new Node[gridWidth, gridHeight];
@@ -49,6 +58,7 @@ public class GridManager : MonoBehaviour
             }
         }
 
+        //lines
         for(int i = 0; i < gridWidth + 1; i++)
         {
             Transform currentLine = Instantiate(linePrefab, new Vector3(i - offsetX - 0.5f, 0f, -2f), Quaternion.identity).transform;
@@ -72,10 +82,10 @@ public class GridManager : MonoBehaviour
         {
             for(int j = -1; j < 2; j++)
             {
-                if (i == 0 && j == 0) continue;
+                if(i == 0 && j == 0) continue;
                 if(node.x + i < gridWidth && node.x + i >= 0)
                 {
-                    if (node.y + j < gridHeight && node.y + j >= 0)
+                    if(node.y + j < gridHeight && node.y + j >= 0)
                     {
                         neighbors.Add(currentGrid[i + node.x, j + node.y]);
                     }
@@ -84,7 +94,17 @@ public class GridManager : MonoBehaviour
         }
         return neighbors;
     }
-    
+    public List<Node> Get4Neighbors(Node node)
+    {
+        List<Node> neighbors = new List<Node>();
+        //just brute force it
+        if(node.x + 1 < gridWidth)  { neighbors.Add(currentGrid[node.x + 1, node.y]); }
+        if(node.x - 1 >= 0)         { neighbors.Add(currentGrid[node.x -1, node.y]); }
+        if(node.y + 1 < gridHeight) { neighbors.Add(currentGrid[node.x, node.y + 1]); }
+        if (node.y - 1 >= 0)        { neighbors.Add(currentGrid[node.x, node.y - 1]); }
+        return neighbors;
+    }
+
     public void UpdateNode(int x, int y, NodeType type)
     {
         currentGrid[x, y].type = type;
@@ -101,18 +121,10 @@ public class GridManager : MonoBehaviour
             { NodeType.Unexplored, unexploredColor },
             { NodeType.Explored, exploredColor },
             { NodeType.Obstacle, obstacleColor },
-            { NodeType.Path, pathColor }
+            { NodeType.Path, pathColor },
+            { NodeType.Goal, goalColor },
+            { NodeType.Root, rootColor }
         };
-
-        GenerateGrid();
-
-        List<Node> neighbors = GetNeighbors(currentGrid[10, 10]);
-        /*
-        foreach(Node node in neighbors)
-        {
-            Debug.Log(node.x.ToString() + " " + node.y.ToString());
-        }
-        */
     }
 }
 
