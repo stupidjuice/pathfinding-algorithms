@@ -8,6 +8,7 @@ public class GridManager : MonoBehaviour
     public int gridHeight;
     public Color unexploredColor, exploredColor, obstacleColor, pathColor, rootColor, goalColor;
     public Dictionary<NodeType, Color> gridColors;
+    public float offsetX, offsetY;
     public enum NodeType
     {
         Unexplored,
@@ -36,7 +37,6 @@ public class GridManager : MonoBehaviour
     public void GenerateGrid()
     {
         //get offsets so the grid is centered at (0, 0)
-        float offsetX, offsetY;
         if(gridWidth % 2 == 0) { offsetX = gridWidth / 2 - 0.5f; }
         else { offsetX = gridWidth / 2; }
 

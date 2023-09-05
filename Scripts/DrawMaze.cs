@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class DrawMaze : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GridManager g;
+    public Camera cam;
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetMouseButton(0))
+        {
+            Vector2Int coordinates = Vector2Int.CeilToInt(cam.ScreenToWorldPoint(Input.mousePosition));
+            coordinates.x += 
+        }
     }
 }
