@@ -9,6 +9,9 @@ public class GridGeneratorUI : MonoBehaviour
 {
     public GridManager g;
     public TMP_InputField wInput, hInput;
+    public Button mazeDrawMode;
+
+    private bool setStartMode, setEndMode;
 
     public void Generate()
     {
@@ -22,5 +25,24 @@ public class GridGeneratorUI : MonoBehaviour
             g.gridHeight = height;
             g.GenerateGrid();
         }
+
+        mazeDrawMode.interactable = true;
+    }
+    public void SetStart()
+    {
+
+    }
+
+    void Update()
+    {
+        if(setStartMode)
+        {
+
+        }
+    }
+
+    private void Start()
+    {
+        mazeDrawMode.interactable = false;
     }
 }
