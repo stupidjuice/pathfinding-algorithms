@@ -97,7 +97,7 @@ public class GridManager : MonoBehaviour
     public List<Node> Get4Neighbors(Node node)
     {
         List<Node> neighbors = new List<Node>();
-        //just brute force it
+        //uwu
         if(node.x + 1 < gridWidth)  { neighbors.Add(currentGrid[node.x + 1, node.y]); }
         if(node.x - 1 >= 0)         { neighbors.Add(currentGrid[node.x -1, node.y]); }
         if(node.y + 1 < gridHeight) { neighbors.Add(currentGrid[node.x, node.y + 1]); }
