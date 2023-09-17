@@ -14,6 +14,7 @@ public class BreadthFirstSearch : MonoBehaviour
         Queue<Node> queue = new Queue<Node>();
         root.type = GridManager.NodeType.Explored;
         queue.Enqueue(root);
+        //use this to trace path back to start after the goal is found
         Node traceback = null;
 
         while (queue.Count > 0)
@@ -22,16 +23,20 @@ public class BreadthFirstSearch : MonoBehaviour
 
             if (v == goal)
             {
+                //yippe! path was found
                 foundPath = true;
                 traceback = v;
                 break;
             }
             foreach (Node neighbor in g.Get4Neighbors(v))
             {
+                //terrible doube if statement
                 if (neighbor.type != GridManager.NodeType.Obstacle)
                 {
                     if (neighbor.type != GridManager.NodeType.Explored)
                     {
+                        //updates the colors of the nodes around the square
+                        //this serves no actual pathfinding function, but makes the visualization a bit easier to understand
                         foreach (Node neighbor2 in g.Get4Neighbors(neighbor))
                         {
                             if (neighbor2.type == GridManager.NodeType.Unexplored) { g.squareRenderers[neighbor2.x, neighbor2.y].color = g.neigborColor; }
@@ -39,11 +44,13 @@ public class BreadthFirstSearch : MonoBehaviour
                         neighbor.parent = v;
                         queue.Enqueue(neighbor);
 
+                        //prevents the start node from changing color so it will always be shown and never turn red
                         if (neighbor != goal || neighbor.type != GridManager.NodeType.Root)
                         {
                             g.UpdateNode(neighbor.x, neighbor.y, GridManager.NodeType.Explored);
                         }
 
+                        //delays the yield return null until simSpeed nodes were explored (lets us control the speed of the simulation)
                         if (runThisFrameCounter > gUI.simSpeed - 1)
                         {
                             runThisFrameCounter = 0;
@@ -61,6 +68,7 @@ public class BreadthFirstSearch : MonoBehaviour
             {
                 traceback = traceback.parent;
                 g.UpdateNode(traceback.x, traceback.y, GridManager.NodeType.Path);
+
                 if (runThisFrameCounter > gUI.simSpeed - 1)
                 {
                     runThisFrameCounter = 0;
