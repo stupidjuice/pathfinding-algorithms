@@ -19,7 +19,6 @@ public class DepthFirstSearch : MonoBehaviour
 
         while (stack.Count > 0)
         {
-            Debug.Log(foundPath);
             Node v = stack.Pop();
 
             foreach (Node neighbor in g.Get4Neighbors(v))
@@ -41,7 +40,7 @@ public class DepthFirstSearch : MonoBehaviour
                         if (neighbor == goal)
                         {
                             foundPath = true;
-                            traceback = v;
+                            traceback = neighbor;
                             //quit while loop
                             stack.Clear();
                             break;
@@ -68,8 +67,11 @@ public class DepthFirstSearch : MonoBehaviour
             {
                 while (traceback != root)
                 {
+                    if(traceback != root && traceback != goal)
+                    {
+                        g.UpdateNode(traceback.x, traceback.y, GridManager.NodeType.Path);
+                    }
                     traceback = traceback.parent;
-                    g.UpdateNode(traceback.x, traceback.y, GridManager.NodeType.Path);
 
                     if (runThisFrameCounter > (gUI.simSpeed - 1) / 8f)
                     {

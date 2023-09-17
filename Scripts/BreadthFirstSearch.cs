@@ -21,13 +21,6 @@ public class BreadthFirstSearch : MonoBehaviour
         {
             Node v = queue.Dequeue();
 
-            if (v == goal)
-            {
-                //yippe! path was found
-                foundPath = true;
-                traceback = v;
-                break;
-            }
             foreach (Node neighbor in g.Get4Neighbors(v))
             {
                 //terrible doube if statement
@@ -43,6 +36,15 @@ public class BreadthFirstSearch : MonoBehaviour
                         }
                         neighbor.parent = v;
                         queue.Enqueue(neighbor);
+
+                        if (neighbor == goal)
+                        {
+                            //yippe! path was found
+                            foundPath = true;
+                            traceback = neighbor.parent;
+                            queue.Clear();
+                            break;
+                        }
 
                         //prevents the start node from changing color so it will always be shown and never turn red
                         if (neighbor != goal || neighbor.type != GridManager.NodeType.Root)
@@ -66,8 +68,11 @@ public class BreadthFirstSearch : MonoBehaviour
         {
             while (traceback != root)
             {
+                if (traceback != root)
+                {
+                    g.UpdateNode(traceback.x, traceback.y, GridManager.NodeType.Path);
+                }
                 traceback = traceback.parent;
-                g.UpdateNode(traceback.x, traceback.y, GridManager.NodeType.Path);
 
                 if (runThisFrameCounter > (gUI.simSpeed - 1) / 8f)
                 {

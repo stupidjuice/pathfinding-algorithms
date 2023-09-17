@@ -20,6 +20,8 @@ public class UILogicHandler : MonoBehaviour
     public Greedy greedyfs;
     public AStar astar;
 
+    public SaveLoad saver;
+
     public void Generate()
     {
         int width = 0, height = 0;
@@ -51,6 +53,7 @@ public class UILogicHandler : MonoBehaviour
     }
     public void StartPathfind()
     {
+        saver.Save("BEFORE_PATHFIND_START", g.currentGrid);
         switch(pathfindAlgOption.value)
         {
             case 0:
@@ -61,5 +64,10 @@ public class UILogicHandler : MonoBehaviour
                 break;
 
         }
+    }
+    
+    public void ResetPathfind()
+    {
+        saver.Load("BEFORE_PATHFIND_START");
     }
 }

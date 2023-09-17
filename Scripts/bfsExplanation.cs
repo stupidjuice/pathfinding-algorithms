@@ -19,10 +19,6 @@ public class bfsExplanation : GridManager
         {
             Node v = queue.Dequeue();
 
-            if (v == goal)
-            {
-                return v;
-            }
             foreach (Node neighbor in GetNeighbors(v))
             {
                 if (neighbor.type != NodeType.Obstacle)
@@ -32,6 +28,11 @@ public class bfsExplanation : GridManager
                         neighbor.type = NodeType.Explored;
                         neighbor.parent = v;
                         queue.Enqueue(neighbor);
+
+                        if (neighbor == goal)
+                        {
+                            return neighbor;
+                        }
                     }
                 }
             }

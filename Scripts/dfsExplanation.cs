@@ -19,10 +19,6 @@ public class dfsExplanation : GridManager
         {
             Node v = stack.Pop();
 
-            if (v == goal)
-            {
-                return v;
-            }
             foreach (Node neighbor in GetNeighbors(v))
             {
                 if (neighbor.type != NodeType.Obstacle)
@@ -32,6 +28,11 @@ public class dfsExplanation : GridManager
                         neighbor.type = NodeType.Explored;
                         neighbor.parent = v;
                         stack.Push(neighbor);
+
+                        if (neighbor == goal)
+                        {
+                            return neighbor;
+                        }
                     }
                 }
             }

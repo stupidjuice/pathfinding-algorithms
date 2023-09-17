@@ -31,6 +31,7 @@ public class GridManager : MonoBehaviour
     public SpriteRenderer[,] squareRenderers;
     public GameObject squarePrefab;
     public GameObject linePrefab;
+    public Transform parent;
     public float lineWidth;
     public Camera cam;
     public float extraOrthoScale = 1.0f;
@@ -43,17 +44,17 @@ public class GridManager : MonoBehaviour
 
         if(gridHeight % 2 == 0) { offsetY = gridHeight / 2 - 0.5f; }
         else { offsetY = gridHeight / 2; }
-
+            
         currentGrid = new Node[gridWidth, gridHeight];
         squareRenderers = new SpriteRenderer[gridWidth, gridHeight];
 
-        for(int i = 0; i < gridWidth; i++)
+        for (int i = 0; i < gridWidth; i++)
         {
-            for(int j = 0; j < gridHeight; j++)
+            for (int j = 0; j < gridHeight; j++)
             {
                 currentGrid[i, j] = new Node(NodeType.Unexplored, i, j);
 
-                GameObject newSquare = Instantiate(squarePrefab, new Vector3(i - offsetX, j - offsetY, 0f), Quaternion.identity);
+                GameObject newSquare = Instantiate(squarePrefab, new Vector3(i - offsetX, j - offsetY, 0f), Quaternion.identity, parent);
                 squareRenderers[i, j] = newSquare.GetComponent<SpriteRenderer>();
                 squareRenderers[i, j].color = gridColors[NodeType.Unexplored];
             }
@@ -62,18 +63,28 @@ public class GridManager : MonoBehaviour
         //lines
         for(int i = 0; i < gridWidth + 1; i++)
         {
-            Transform currentLine = Instantiate(linePrefab, new Vector3(i - offsetX - 0.5f, 0f, -2f), Quaternion.identity).transform;
+            Transform currentLine = Instantiate(linePrefab, new Vector3(i - offsetX - 0.5f, 0f, -2f), Quaternion.identity, parent).transform;
             currentLine.localScale = new Vector3(lineWidth, gridHeight, 1f);
         }
         for (int i = 0; i < gridHeight + 1; i++)
         {
-            Transform currentLine = Instantiate(linePrefab, new Vector3(0f, i - offsetY - 0.5f, -2f), Quaternion.identity).transform;
+            Transform currentLine = Instantiate(linePrefab, new Vector3(0f, i - offsetY - 0.5f, -2f), Quaternion.identity, parent).transform;
             currentLine.localScale = new Vector3(gridWidth, lineWidth, 1f);
         }
 
         //set orthographic scale so that the entire map fits within the camera view
         if (gridHeight * cam.pixelWidth > gridWidth * cam.pixelHeight) { cam.orthographicSize = gridHeight / 2 + extraOrthoScale * gridHeight; }
         else { cam.orthographicSize = gridWidth * (cam.pixelHeight / cam.pixelWidth) / 2 + extraOrthoScale * gridWidth; }
+    }
+
+    public void DeleteGrid()
+    {
+        squareRenderers = null;
+        currentGrid = null;
+        foreach(Transform child in parent)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
     public List<Node> GetNeighbors(Node node)
@@ -130,6 +141,7 @@ public class GridManager : MonoBehaviour
     }
 }
 
+[System.Serializable]
 public class Node
 {
     public GridManager.NodeType type;
