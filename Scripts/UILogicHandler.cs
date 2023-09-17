@@ -5,14 +5,20 @@ using System;
 using UnityEngine.UI;
 using TMPro;
 
-public class GridGeneratorUI : MonoBehaviour
+public class UILogicHandler : MonoBehaviour
 {
     public GridManager g;
     public TMP_InputField wInput, hInput;
     public Button mazeDrawMode, setStartButton, setGoalButton;
     public TMP_Text speedLabel;
+    public TMP_Dropdown pathfindAlgOption;
     public Slider simSpeedSlider;
     public int simSpeed;
+
+    public DepthFirstSearch dfs;
+    public BreadthFirstSearch bfs;
+    public Greedy greedyfs;
+    public AStar astar;
 
     public void Generate()
     {
@@ -42,5 +48,18 @@ public class GridGeneratorUI : MonoBehaviour
     {
         simSpeed = (int)simSpeedSlider.value;
         speedLabel.text = simSpeed.ToString() + "x";
+    }
+    public void StartPathfind()
+    {
+        switch(pathfindAlgOption.value)
+        {
+            case 0:
+                StartCoroutine(dfs.DFSVisualizer(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y]));
+                break;
+            case 1:
+                StartCoroutine(bfs.BFSVisualizer(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y]));
+                break;
+
+        }
     }
 }

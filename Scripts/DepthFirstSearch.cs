@@ -2,35 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BreadthFirstSearch : MonoBehaviour
+public class DepthFirstSearch : MonoBehaviour
 {
     public GridManager g;
     public UILogicHandler gUI;
-    private int runThisFrameCounter = 0;
 
-    public IEnumerator BFSVisualizer(Node[,] grid, Node root, Node goal)
+    private int runThisFrameCounter = 0;
+    public IEnumerator DFSVisualizer(Node[,] grid, Node root, Node goal)
     {
         bool foundPath = false;
-        Queue<Node> queue = new Queue<Node>();
+        Stack<Node> stack = new Stack<Node>();
         root.type = GridManager.NodeType.Explored;
-        queue.Enqueue(root);
-        //use this to trace path back to start after the goal is found
+        stack.Push(root);
+        //use this when the path is found to trace back to the start
         Node traceback = null;
 
-        while (queue.Count > 0)
+        while (stack.Count > 0)
         {
-            Node v = queue.Dequeue();
+            Debug.Log(foundPath);
+            Node v = stack.Pop();
 
-            if (v == goal)
-            {
-                //yippe! path was found
-                foundPath = true;
-                traceback = v;
-                break;
-            }
             foreach (Node neighbor in g.Get4Neighbors(v))
             {
-                //terrible doube if statement
                 if (neighbor.type != GridManager.NodeType.Obstacle)
                 {
                     if (neighbor.type != GridManager.NodeType.Explored)
@@ -41,8 +34,18 @@ public class BreadthFirstSearch : MonoBehaviour
                         {
                             if (neighbor2.type == GridManager.NodeType.Unexplored) { g.squareRenderers[neighbor2.x, neighbor2.y].color = g.neigborColor; }
                         }
+
                         neighbor.parent = v;
-                        queue.Enqueue(neighbor);
+                        stack.Push(neighbor);
+
+                        if (neighbor == goal)
+                        {
+                            foundPath = true;
+                            traceback = v;
+                            //quit while loop
+                            stack.Clear();
+                            break;
+                        }
 
                         //prevents the start node from changing color so it will always be shown and never turn red
                         if (neighbor != goal || neighbor.type != GridManager.NodeType.Root)
@@ -60,21 +63,21 @@ public class BreadthFirstSearch : MonoBehaviour
                 }
             }
             runThisFrameCounter++;
-        }
-
-        if (foundPath)
-        {
-            while (traceback != root)
+                
+            if (foundPath)
             {
-                traceback = traceback.parent;
-                g.UpdateNode(traceback.x, traceback.y, GridManager.NodeType.Path);
-
-                if (runThisFrameCounter > (gUI.simSpeed - 1) / 8f)
+                while (traceback != root)
                 {
-                    runThisFrameCounter = 0;
-                    yield return null;
+                    traceback = traceback.parent;
+                    g.UpdateNode(traceback.x, traceback.y, GridManager.NodeType.Path);
+
+                    if (runThisFrameCounter > (gUI.simSpeed - 1) / 8f)
+                    {
+                        runThisFrameCounter = 0;
+                        yield return null;
+                    }
+                    runThisFrameCounter++;
                 }
-                runThisFrameCounter++;
             }
         }
     }

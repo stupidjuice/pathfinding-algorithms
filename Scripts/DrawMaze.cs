@@ -35,7 +35,6 @@ public class DrawMaze : MonoBehaviour
             if (!EventSystem.current.IsPointerOverGameObject())
             {
                 coordinatesInt = Vector2Int.RoundToInt(coordinates);
-                Debug.Log(coordinatesInt);
              
                 //make sure this shit aint oob
                 if(coordinatesInt.x >= 0 && coordinatesInt.x < g.gridWidth && coordinatesInt.y >= 0 && coordinatesInt.y < g.gridHeight)
