@@ -27,13 +27,15 @@ public class DrawMaze : MonoBehaviour
             coordinates.x += g.offsetX;
             coordinates.y += g.offsetY;
 
-            Debug.Log(coordinates);
+            //Debug.Log(coordinates);
+            //Debug.Log(g.gridHeight);
             Vector2Int coordinatesInt;
             //idk why the fuck this doesnt count 2d objects but it doesnt
             //this detects if the mouse is currently over the ui
             if (!EventSystem.current.IsPointerOverGameObject())
             {
                 coordinatesInt = Vector2Int.RoundToInt(coordinates);
+                Debug.Log(coordinatesInt);
              
                 //make sure this shit aint oob
                 if(coordinatesInt.x >= 0 && coordinatesInt.x < g.gridWidth && coordinatesInt.y >= 0 && coordinatesInt.y < g.gridHeight)
@@ -44,16 +46,23 @@ public class DrawMaze : MonoBehaviour
                     }
                     else if (setStartMode)
                     {
-                        Debug.Log(g.gridWidth);
                         if (currentStart != Vector2Int.left) { g.UpdateNode(currentStart.x, currentStart.y, GridManager.NodeType.Unexplored); }
                         g.UpdateNode(coordinatesInt.x, coordinatesInt.y, GridManager.NodeType.Root);
+                        currentStart = coordinatesInt;
+                        g.startCoord = currentStart;
                         setStartMode = false;
+                        mazeDraw.interactable = true;
+                        setGoal.interactable = true;
                     }
                     else if (setGoalMode)
                     {
                         if (currentGoal != Vector2Int.left) { g.UpdateNode(currentGoal.x, currentGoal.y, GridManager.NodeType.Unexplored); }
                         g.UpdateNode(coordinatesInt.x, coordinatesInt.y, GridManager.NodeType.Goal);
+                        currentGoal = coordinatesInt;
+                        g.endCoord = currentGoal;
                         setGoalMode = false;
+                        mazeDraw.interactable = true;
+                        setStart.interactable = true;
                     }
                 }
             }            
@@ -64,6 +73,8 @@ public class DrawMaze : MonoBehaviour
     {
         mazeDrawMode = !mazeDrawMode;
         enterOrExit.text = mazeDrawMode ? "Exit Maze Drawing Mode" : "Enter Maze Drawing Mode";
+        setGoal.interactable = !mazeDrawMode;
+        setStart.interactable = !mazeDrawMode;
     }
     public void SetStart()
     {
@@ -72,5 +83,14 @@ public class DrawMaze : MonoBehaviour
         setGoal.interactable = false;
         mazeDraw.interactable = false;
         setStartMode = !setStartMode;
+    }
+    public void SetGoal()
+    {
+        generate.interactable = false;
+        pathfind.interactable = false;
+        setStart.interactable = false;
+        mazeDraw.interactable = false;
+        setGoalMode = !setGoalMode;
+        pathfind.interactable = true;
     }
 }

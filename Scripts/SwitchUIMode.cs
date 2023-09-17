@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class SwitchUIMode : MonoBehaviour
 {
-    public GameObject startup, gridGenerator, pathfindingStarter;
+    public RectTransform startup, gridGenerator, pathfindingStarter;
+    public float hiddenX;
+    public float shownX;
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
@@ -14,25 +16,32 @@ public class SwitchUIMode : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.F1))
         {
             HideAllUI();
-            gridGenerator.SetActive(true);
+            ShowUIElement(gridGenerator);
         }
         if (Input.GetKeyDown(KeyCode.F2))
         {
             HideAllUI();
-            pathfindingStarter.SetActive(true);
+            ShowUIElement(pathfindingStarter);
         }
     }
 
     void HideAllUI()
     {
-        startup.SetActive(false);
-        gridGenerator.SetActive(false);
-        pathfindingStarter.SetActive(false);
+        startup.localPosition = new Vector3(hiddenX, startup.localPosition.y);
+        gridGenerator.localPosition = new Vector3(hiddenX, gridGenerator.localPosition.y);
+        pathfindingStarter.localPosition = new Vector3(hiddenX, pathfindingStarter.localPosition.y);
+    }
+    void ShowUIElement(RectTransform ui)
+    {
+        ui.localPosition = new Vector3(shownX, ui.localPosition.y);
     }
 
     void Start()
     {
+        startup.gameObject.SetActive(true);
+        gridGenerator.gameObject.SetActive(true);
+        pathfindingStarter.gameObject.SetActive(true);
         HideAllUI();
-        startup.SetActive(true);
+        ShowUIElement(startup);
     }
 }

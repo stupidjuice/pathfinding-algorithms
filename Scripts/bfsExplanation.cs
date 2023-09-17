@@ -25,11 +25,14 @@ public class bfsExplanation : GridManager
             }
             foreach (Node neighbor in GetNeighbors(v))
             {
-                if (neighbor.type != NodeType.Explored)
+                if (neighbor.type != NodeType.Obstacle)
                 {
-                    neighbor.type = NodeType.Explored;
-                    neighbor.parent = v;
-                    queue.Enqueue(neighbor);
+                    if (neighbor.type != NodeType.Explored)
+                    {
+                        neighbor.type = NodeType.Explored;
+                        neighbor.parent = v;
+                        queue.Enqueue(neighbor);
+                    }
                 }
             }
         }

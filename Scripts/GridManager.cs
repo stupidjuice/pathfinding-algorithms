@@ -6,9 +6,10 @@ public class GridManager : MonoBehaviour
 {
     public int gridWidth;
     public int gridHeight;
-    public Color unexploredColor, exploredColor, obstacleColor, pathColor, rootColor, goalColor;
+    public Color unexploredColor, exploredColor, obstacleColor, pathColor, rootColor, goalColor, neigborColor;
     public Dictionary<NodeType, Color> gridColors;
     public float offsetX, offsetY;
+    public Vector2Int startCoord, endCoord;
     public enum NodeType
     {
         Unexplored,
@@ -102,6 +103,7 @@ public class GridManager : MonoBehaviour
         if(node.x - 1 >= 0)         { neighbors.Add(currentGrid[node.x -1, node.y]); }
         if(node.y + 1 < gridHeight) { neighbors.Add(currentGrid[node.x, node.y + 1]); }
         if (node.y - 1 >= 0)        { neighbors.Add(currentGrid[node.x, node.y - 1]); }
+
         return neighbors;
     }
 

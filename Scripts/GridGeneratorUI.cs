@@ -9,9 +9,10 @@ public class GridGeneratorUI : MonoBehaviour
 {
     public GridManager g;
     public TMP_InputField wInput, hInput;
-    public Button mazeDrawMode;
-
-    private bool setStartMode, setEndMode;
+    public Button mazeDrawMode, setStartButton, setGoalButton;
+    public TMP_Text speedLabel;
+    public Slider simSpeedSlider;
+    public float simSpeed;
 
     public void Generate()
     {
@@ -27,22 +28,20 @@ public class GridGeneratorUI : MonoBehaviour
         }
 
         mazeDrawMode.interactable = true;
-    }
-    public void SetStart()
-    {
-
-    }
-
-    void Update()
-    {
-        if(setStartMode)
-        {
-
-        }
+        setStartButton.interactable = true;
+        setGoalButton.interactable = true;
     }
 
     private void Start()
     {
         mazeDrawMode.interactable = false;
+        setStartButton.interactable = false;
+        setGoalButton.interactable= false;
+    }
+    public void ChangeSimSpeed()
+    {
+        simSpeed = simSpeedSlider.value;
+        //the "#.##" rounds to the hundreds place
+        speedLabel.text = simSpeed.ToString("#.##") + "x";
     }
 }
