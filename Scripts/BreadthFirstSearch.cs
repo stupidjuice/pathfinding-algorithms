@@ -6,9 +6,11 @@ public class BreadthFirstSearch : MonoBehaviour
 {
     public GridManager g;
     public GridGeneratorUI gUI;
+    private int runThisFrameCounter;
 
     IEnumerator BFSVisualizer(Node[,] grid, Node root, Node goal)
     {
+        bool foundPath = false;
         Queue<Node> queue = new Queue<Node>();
         root.type = GridManager.NodeType.Explored;
         queue.Enqueue(root);
@@ -16,45 +18,56 @@ public class BreadthFirstSearch : MonoBehaviour
 
         while (queue.Count > 0)
         {
-            for (int i = 0; i < gUI.simSpeed; i++)
+            Node v = queue.Dequeue();
+
+            if (v == goal)
             {
-                Node v = queue.Dequeue();
-
-                if (v == goal)
+                foundPath = true;
+                traceback = v;
+                break;
+            }
+            foreach (Node neighbor in g.Get4Neighbors(v))
+            {
+                if (neighbor.type != GridManager.NodeType.Obstacle)
                 {
-                    traceback = v;
-                    break;
-                }
-                foreach (Node neighbor in g.Get4Neighbors(v))
-                {
-                    if (neighbor.type != GridManager.NodeType.Obstacle)
+                    if (neighbor.type != GridManager.NodeType.Explored)
                     {
-                        if (neighbor.type != GridManager.NodeType.Explored)
+                        foreach (Node neighbor2 in g.Get4Neighbors(neighbor))
                         {
-                            foreach (Node neighbor2 in g.Get4Neighbors(neighbor))
-                            {
-                                if (neighbor2.type == GridManager.NodeType.Unexplored) { g.squareRenderers[neighbor2.x, neighbor2.y].color = g.neigborColor; }
-                            }
-                            neighbor.parent = v;
-                            queue.Enqueue(neighbor);
+                            if (neighbor2.type == GridManager.NodeType.Unexplored) { g.squareRenderers[neighbor2.x, neighbor2.y].color = g.neigborColor; }
+                        }
+                        neighbor.parent = v;
+                        queue.Enqueue(neighbor);
 
-                            if (neighbor != goal || neighbor.type != GridManager.NodeType.Root)
-                            {
-                                g.UpdateNode(neighbor.x, neighbor.y, GridManager.NodeType.Explored);
-                            }
+                        if (neighbor != goal || neighbor.type != GridManager.NodeType.Root)
+                        {
+                            g.UpdateNode(neighbor.x, neighbor.y, GridManager.NodeType.Explored);
+                        }
 
+                        if (runThisFrameCounter > gUI.simSpeed - 1)
+                        {
+                            runThisFrameCounter = 0;
                             yield return null;
                         }
                     }
                 }
             }
+            runThisFrameCounter++;
         }
 
-        while (traceback != root)
+        if (foundPath)
         {
-            traceback = traceback.parent;
-            g.UpdateNode(traceback.x, traceback.y, GridManager.NodeType.Path);
-            yield return null;
+            while (traceback != root)
+            {
+                traceback = traceback.parent;
+                g.UpdateNode(traceback.x, traceback.y, GridManager.NodeType.Path);
+                if (runThisFrameCounter > gUI.simSpeed - 1)
+                {
+                    runThisFrameCounter = 0;
+                    yield return null;
+                }
+                runThisFrameCounter++;
+            }
         }
     }
 

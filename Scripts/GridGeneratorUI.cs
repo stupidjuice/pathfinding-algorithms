@@ -12,7 +12,7 @@ public class GridGeneratorUI : MonoBehaviour
     public Button mazeDrawMode, setStartButton, setGoalButton;
     public TMP_Text speedLabel;
     public Slider simSpeedSlider;
-    public float simSpeed;
+    public int simSpeed;
 
     public void Generate()
     {
@@ -40,8 +40,7 @@ public class GridGeneratorUI : MonoBehaviour
     }
     public void ChangeSimSpeed()
     {
-        simSpeed = simSpeedSlider.value;
-        //the "#.##" rounds to the hundreds place
-        speedLabel.text = simSpeed.ToString("#.##") + "x";
+        simSpeed = (int)simSpeedSlider.value;
+        speedLabel.text = simSpeed.ToString() + "x";
     }
 }

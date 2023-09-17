@@ -976,8 +976,8 @@ MonoBehaviour:
   m_HandleRect: {fileID: 807642020}
   m_Direction: 0
   m_MinValue: 1
-  m_MaxValue: 10
-  m_WholeNumbers: 0
+  m_MaxValue: 50
+  m_WholeNumbers: 1
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1520,7 +1520,7 @@ MonoBehaviour:
   setGoalButton: {fileID: 2045019760}
   speedLabel: {fileID: 2142591139}
   simSpeedSlider: {fileID: 435002420}
-  simSpeed: 1
+  simSpeed: 0
 --- !u!4 &514521065
 Transform:
   m_ObjectHideFlags: 0
@@ -3113,6 +3113,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 978126864}
   m_CullTransparentMesh: 1
+--- !u!1 &1109537593
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1109537594}
+  m_Layer: 0
+  m_Name: Pathfinding Handler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1109537594
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109537593}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 145.81984, y: 110.469025, z: -3.107393}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1146763029
 GameObject:
   m_ObjectHideFlags: 0
@@ -4340,7 +4371,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1.0x
+  m_text: 1x
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
