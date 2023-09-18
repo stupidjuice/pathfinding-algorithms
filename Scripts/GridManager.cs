@@ -147,11 +147,19 @@ public class Node
     public GridManager.NodeType type;
     public int x, y;
     public Node parent;
+    public float hCost, gCost, fCost;
 
     public Node(GridManager.NodeType type, int x, int y)
     {
         this.type = type;
         this.x = x;
         this.y = y;
+    }
+    public Node(GridManager.NodeType type, int x, int y, float fCost)
+    {
+        this.type = type;
+        this.x = x;
+        this.y = y;
+        this.fCost = fCost;
     }
 }
