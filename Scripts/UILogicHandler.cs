@@ -18,7 +18,7 @@ public class UILogicHandler : MonoBehaviour
     public DepthFirstSearch dfs;
     public BreadthFirstSearch bfs;
     public Greedy greedyfs;
-    public AStar astar;
+    public AStarSearch astar;
 
     public SaveLoad saver;
 
@@ -67,6 +67,12 @@ public class UILogicHandler : MonoBehaviour
                 break;
             case 3:
                 StartCoroutine(greedyfs.GreedyBestFirstSearch(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], true));
+                break;
+            case 4:
+                StartCoroutine(astar.AStar(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], false));
+                break;
+            case 5:
+                StartCoroutine(astar.AStar(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], true));
                 break;
         }
     }

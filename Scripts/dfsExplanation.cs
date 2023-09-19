@@ -9,7 +9,7 @@ using UnityEngine;
 //*********************************************************************//
 public class dfsExplanation : GridManager
 {
-    Node DFSVisualizer(Node[,] grid, Node root, Node goal)
+    Node DepthFirstSearch(Node[,] grid, Node root, Node goal)
     {
         Stack<Node> stack = new Stack<Node>();
         root.type = NodeType.Explored;
@@ -28,20 +28,25 @@ public class dfsExplanation : GridManager
             {
                 if (neighbor.type != NodeType.Obstacle)
                 {
+                    if (neighbor == goal)
+                    {
+                        return neighbor;
+                    }
+
                     if (neighbor.type != NodeType.Explored)
                     {
                         neighbor.type = NodeType.Explored;
                         neighbor.parent = v;
                         stack.Push(neighbor);
-
-                        if (neighbor == goal)
-                        {
-                            return neighbor;
-                        }
                     }
                 }
             }
         }
         return null;
+    }
+    
+    void OwO()
+    {
+        DepthFirstSearch(new Node[5, 5], new Node(NodeType.Unexplored, 0, 0), new Node(NodeType.Unexplored, 0, 0));
     }
 }

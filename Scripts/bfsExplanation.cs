@@ -9,7 +9,7 @@ using UnityEngine;
 //*********************************************************************//
 public class bfsExplanation : GridManager
 {
-    Node BFS(Node[,] grid, Node root, Node goal)
+    Node BreadthFirstSearch(Node[,] grid, Node root, Node goal)
     {
         Queue<Node> queue = new Queue<Node>();
         root.type = NodeType.Explored;
@@ -30,14 +30,14 @@ public class bfsExplanation : GridManager
                 {
                     if (neighbor.type != NodeType.Explored)
                     {
-                        neighbor.type = NodeType.Explored;
-                        neighbor.parent = v;
-                        queue.Enqueue(neighbor);
-
                         if (neighbor == goal)
                         {
                             return neighbor;
                         }
+
+                        neighbor.type = NodeType.Explored;
+                        neighbor.parent = v;
+                        queue.Enqueue(neighbor);
                     }
                 }
             }
@@ -49,6 +49,6 @@ public class bfsExplanation : GridManager
 
     void UwU()
     {
-        BFS(new Node[5,5], new Node(NodeType.Unexplored, 0, 0), new Node(NodeType.Unexplored, 0, 0));
+        BreadthFirstSearch(new Node[5,5], new Node(NodeType.Unexplored, 0, 0), new Node(NodeType.Unexplored, 0, 0));
     }
 }

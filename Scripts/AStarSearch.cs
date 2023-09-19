@@ -1,22 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Search;
+using System.Resources;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class Greedy : MonoBehaviour
+public class AStarSearch : MonoBehaviour
 {
     public GridManager g;
     public UILogicHandler gUI;
-    private int runThisFrameCounter = 0;
 
-    public IEnumerator GreedyBestFirstSearch(Node[,] grid, Node root, Node goal, bool is8Directional)
+    private int runThisFrameCounter;
+    public IEnumerator AStar(Node[,] grid, Node root, Node goal, bool is8Directional)
     {
         bool foundPath = false;
-        Vector2 goalCoordinate = new Vector2(goal.x, goal.y);
         PriorityQueue pq = new PriorityQueue();
         root.type = GridManager.NodeType.Explored;
+        root.gCost = 0f;
         pq.Enqueue(root);
-        //use this to trace path back to start after the goal is found
         Node traceback = null;
 
         while (pq.heap.Count > 0)
@@ -44,14 +44,20 @@ public class Greedy : MonoBehaviour
                             break;
                         }
 
-                        neighbor.fCost = Vector2.Distance(new Vector2(neighbor.x, neighbor.y), goalCoordinate);
+                        neighbor.hCost = Distance(goal, neighbor);
 
-                        neighbor.parent = v;
-                        pq.Enqueue(neighbor);
-
-                        //prevents the start node from changing color so it will always be shown and never turn red
-                        if (neighbor != goal || neighbor.type != GridManager.NodeType.Root)
+                        float tentativeGCost = v.gCost + Distance(v, neighbor);
+                        if (tentativeGCost < neighbor.gCost)
                         {
+                            neighbor.parent = v;
+                            neighbor.gCost = tentativeGCost;
+                            neighbor.fCost = tentativeGCost + neighbor.hCost;
+
+                            if (!pq.heap.Contains(neighbor))
+                            {
+                                pq.Enqueue(neighbor);
+                                Debug.Log(neighbor.fCost);
+                            }
                             g.UpdateNode(neighbor.x, neighbor.y, GridManager.NodeType.Explored);
                         }
 
@@ -84,5 +90,10 @@ public class Greedy : MonoBehaviour
                 runThisFrameCounter++;
             }
         }
+    }
+
+    public float Distance(Node from, Node to)
+    {
+        return Mathf.Sqrt((from.x -  to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
     }
 }
