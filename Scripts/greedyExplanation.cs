@@ -7,22 +7,23 @@ using UnityEngine;
 //FYI, this class is just for explanation and has no functional purpose
 
 //*********************************************************************//
-public class dfsExplanation : GridManager
+public class greedyExplanation : GridManager
 {
-    Node DFSVisualizer(Node[,] grid, Node root, Node goal)
+    public Node GreedyBestFirstSearch(Node[,] grid, Node root, Node goal)
     {
-        Stack<Node> stack = new Stack<Node>();
-        root.type = NodeType.Explored;
-        stack.Push(root);
+        Vector2 goalCoordinate = new Vector2(goal.x, goal.y);
+        PriorityQueue pq = new PriorityQueue();
+        goal.type = NodeType.Explored;
+        pq.Enqueue(root);
 
         if (root == goal)
         {
             return goal;
         }
 
-        while (stack.Count > 0)
+        while (pq.Count > 0)
         {
-            Node v = stack.Pop();
+            Node v = pq.Dequeue();
 
             foreach (Node neighbor in GetNeighbors(v))
             {
@@ -30,9 +31,10 @@ public class dfsExplanation : GridManager
                 {
                     if (neighbor.type != NodeType.Explored)
                     {
+                        neighbor.hCost = Vector2.Distance(new Vector2(neighbor.x, neighbor.y), goalCoordinate);
                         neighbor.type = NodeType.Explored;
                         neighbor.parent = v;
-                        stack.Push(neighbor);
+                        pq.Enqueue(neighbor);
 
                         if (neighbor == goal)
                         {

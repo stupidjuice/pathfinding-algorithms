@@ -147,7 +147,7 @@ public class Node
     public GridManager.NodeType type;
     public int x, y;
     public Node parent;
-    public float hCost, gCost, fCost;
+    public float hCost = 0f, gCost = 0f, fCost = 0f;
 
     public Node(GridManager.NodeType type, int x, int y)
     {
@@ -163,3 +163,4 @@ public class Node
         this.fCost = fCost;
     }
 }
+//coconut

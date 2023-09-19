@@ -15,6 +15,11 @@ public class bfsExplanation : GridManager
         root.type = NodeType.Explored;
         queue.Enqueue(root);
 
+        if(root == goal)
+        {
+            return goal;
+        }
+
         while (queue.Count > 0)
         {
             Node v = queue.Dequeue();

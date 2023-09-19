@@ -62,7 +62,9 @@ public class UILogicHandler : MonoBehaviour
             case 1:
                 StartCoroutine(bfs.BFSVisualizer(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y]));
                 break;
-
+            case 2:
+                StartCoroutine(greedyfs.GreedyBestFirstSearch(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], false));
+                break;
         }
     }
     
