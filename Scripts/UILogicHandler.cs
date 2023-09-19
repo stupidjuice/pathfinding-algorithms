@@ -65,6 +65,9 @@ public class UILogicHandler : MonoBehaviour
             case 2:
                 StartCoroutine(greedyfs.GreedyBestFirstSearch(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], false));
                 break;
+            case 3:
+                StartCoroutine(greedyfs.GreedyBestFirstSearch(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], true));
+                break;
         }
     }
     

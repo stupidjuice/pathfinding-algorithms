@@ -4683,6 +4683,8 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: BFS (4D)
       m_Image: {fileID: 0}
+    - m_Text: Greedy (4D)
+      m_Image: {fileID: 0}
     - m_Text: Greedy (8D)
       m_Image: {fileID: 0}
     - m_Text: A* (8D)
