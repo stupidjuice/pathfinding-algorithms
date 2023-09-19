@@ -31,7 +31,7 @@ public class Greedy : MonoBehaviour
                     {
                         //updates the colors of the nodes around the square
                         //this serves no actual pathfinding function, but makes the visualization a bit easier to understand
-                        foreach (Node neighbor2 in is8Directional ? g.GetNeighbors(v) : g.Get4Neighbors(v))
+                        foreach (Node neighbor2 in is8Directional ? g.GetNeighbors(neighbor) : g.Get4Neighbors(neighbor))
                         {
                             if (neighbor2.type == GridManager.NodeType.Unexplored) { g.squareRenderers[neighbor2.x, neighbor2.y].color = g.neigborColor; }
                         }
