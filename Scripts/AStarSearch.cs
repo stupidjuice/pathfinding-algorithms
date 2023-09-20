@@ -53,10 +53,9 @@ public class AStarSearch : MonoBehaviour
                             neighbor.gCost = tentativeGCost;
                             neighbor.fCost = tentativeGCost + neighbor.hCost;
 
-                            if (!pq.heap.Contains(neighbor))
+                            if (neighbor.type != GridManager.NodeType.Explored)
                             {
                                 pq.Enqueue(neighbor);
-                                Debug.Log(neighbor.fCost);
                             }
                             g.UpdateNode(neighbor.x, neighbor.y, GridManager.NodeType.Explored);
                         }

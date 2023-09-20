@@ -60,8 +60,8 @@ public class BreadthFirstSearch : MonoBehaviour
                         }
                     }
                 }
+                runThisFrameCounter++;
             }
-            runThisFrameCounter++;
         }
 
         if (foundPath)

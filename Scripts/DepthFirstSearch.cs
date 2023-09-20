@@ -60,8 +60,8 @@ public class DepthFirstSearch : MonoBehaviour
                         }
                     }
                 }
+                runThisFrameCounter++;
             }
-            runThisFrameCounter++;
                 
             if (foundPath)
             {
