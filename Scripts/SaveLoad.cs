@@ -43,6 +43,7 @@ public class SaveLoad : MonoBehaviour
     }
     public void Load(string saveName)
     {
+        ui.deleteButton.interactable = true;
         g.DeleteGrid();
         string path = Application.persistentDataPath + "/" + saveName + ".grid";
 

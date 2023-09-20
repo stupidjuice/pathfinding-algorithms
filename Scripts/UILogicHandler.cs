@@ -9,10 +9,11 @@ public class UILogicHandler : MonoBehaviour
 {
     public GridManager g;
     public TMP_InputField wInput, hInput;
-    public Button mazeDrawMode, setStartButton, setGoalButton;
+    public Button mazeDrawMode, setStartButton, setGoalButton, generateButton, deleteButton;
     public TMP_Text speedLabel;
     public TMP_Dropdown pathfindAlgOption;
     public Slider simSpeedSlider;
+    public DrawMaze drawMaze;
     public int simSpeed;
 
     public DepthFirstSearch dfs;
@@ -40,13 +41,28 @@ public class UILogicHandler : MonoBehaviour
         mazeDrawMode.interactable = true;
         setStartButton.interactable = true;
         setGoalButton.interactable = true;
+        deleteButton.interactable = true;
+        generateButton.interactable = false;
+    }
+
+    public void DeleteGrid()
+    {
+        g.DeleteGrid();
+        generateButton.interactable = true;
+        deleteButton.interactable = false;
+
+        g.startCoord = Vector2Int.left;
+        g.endCoord = Vector2Int.left;
+        drawMaze.currentStart = Vector2Int.left;
+        drawMaze.currentGoal = Vector2Int.left;
     }
 
     private void Start()
     {
         mazeDrawMode.interactable = false;
         setStartButton.interactable = false;
-        setGoalButton.interactable= false;
+        setGoalButton.interactable = false;
+        deleteButton.interactable = false;
     }
     public void ChangeSimSpeed()
     {

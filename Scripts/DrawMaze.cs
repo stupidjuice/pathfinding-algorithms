@@ -63,6 +63,11 @@ public class DrawMaze : MonoBehaviour
                         mazeDraw.interactable = true;
                         setStart.interactable = true;
                     }
+
+                    if (currentStart != Vector2Int.left && currentGoal != Vector2Int.left)
+                    {
+                        pathfind.interactable = true;
+                    }
                 }
             }            
         }
@@ -77,19 +82,18 @@ public class DrawMaze : MonoBehaviour
     }
     public void SetStart()
     {
-        generate.interactable = false;
-        pathfind.interactable = false;
-        setGoal.interactable = false;
-        mazeDraw.interactable = false;
+        generate.interactable = setStartMode;
+        pathfind.interactable = setStartMode;
+        setGoal.interactable = setStartMode;
+        mazeDraw.interactable = setStartMode;
         setStartMode = !setStartMode;
     }
     public void SetGoal()
     {
-        generate.interactable = false;
-        pathfind.interactable = false;
-        setStart.interactable = false;
-        mazeDraw.interactable = false;
+        generate.interactable = setGoalMode;
+        pathfind.interactable = setGoalMode;
+        setStart.interactable = setGoalMode;
+        mazeDraw.interactable = setGoalMode;
         setGoalMode = !setGoalMode;
-        pathfind.interactable = true;
     }
 }

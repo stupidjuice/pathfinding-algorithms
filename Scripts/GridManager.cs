@@ -6,7 +6,7 @@ public class GridManager : MonoBehaviour
 {
     public int gridWidth;
     public int gridHeight;
-    public Color unexploredColor, exploredColor, obstacleColor, pathColor, rootColor, goalColor, neigborColor;
+    public Color unexploredColor, exploredColor, obstacleColor, pathColor, rootColor, goalColor, neigborColor, lastExplored;
     public Dictionary<NodeType, Color> gridColors;
     public float offsetX, offsetY;
     public Vector2Int startCoord, endCoord;
@@ -35,6 +35,8 @@ public class GridManager : MonoBehaviour
     public float lineWidth;
     public Camera cam;
     public float extraOrthoScale = 1.0f;
+
+    private Node lastExploredNode;
 
     public void GenerateGrid()
     {
@@ -121,7 +123,19 @@ public class GridManager : MonoBehaviour
     public void UpdateNode(int x, int y, NodeType type)
     {
         currentGrid[x, y].type = type;
-        squareRenderers[x, y].color = gridColors[type];
+        if (type == NodeType.Explored)
+        {
+            if(lastExploredNode != null)
+            {
+                squareRenderers[lastExploredNode.x, lastExploredNode.y].color = exploredColor;
+            }
+            squareRenderers[x, y].color = lastExplored;
+            lastExploredNode = currentGrid[x, y];
+        }
+        else
+        {
+            squareRenderers[x, y].color = gridColors[type];
+        } 
     }
 
     private void Start()
