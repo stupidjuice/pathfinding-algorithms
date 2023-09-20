@@ -2192,6 +2192,8 @@ MonoBehaviour:
   greedyfs: {fileID: 547778407}
   astar: {fileID: 2138194046}
   saver: {fileID: 1547088722}
+  timeSinceLastPressedEnter: 100
+  timeBetweenEnterPressThreshold: 0.5
 --- !u!4 &514521065
 Transform:
   m_ObjectHideFlags: 0

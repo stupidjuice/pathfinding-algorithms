@@ -21,6 +21,8 @@ public class UILogicHandler : MonoBehaviour
     public AStarSearch astar;
 
     public SaveLoad saver;
+    public float timeSinceLastPressedEnter;
+    public float timeBetweenEnterPressThreshold;
 
     public void Generate()
     {
@@ -76,7 +78,20 @@ public class UILogicHandler : MonoBehaviour
                 break;
         }
     }
-    
+
+    private void Update()
+    {
+        timeSinceLastPressedEnter += Time.deltaTime;
+        if(Input.GetKeyDown(KeyCode.Return))
+        {
+            if(timeSinceLastPressedEnter < timeBetweenEnterPressThreshold)
+            {
+                StartPathfind();
+            }
+            timeSinceLastPressedEnter = 0f;
+        }
+    }
+
     public void ResetPathfind()
     {
         saver.Load("BEFORE_PATHFIND_START");
