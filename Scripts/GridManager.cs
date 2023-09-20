@@ -81,6 +81,7 @@ public class GridManager : MonoBehaviour
 
     public void DeleteGrid()
     {
+        lastExploredNode = null;
         squareRenderers = null;
         currentGrid = null;
         foreach(Transform child in parent)
