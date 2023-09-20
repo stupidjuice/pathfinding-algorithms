@@ -66,9 +66,9 @@ public class AStarSearch : MonoBehaviour
                             runThisFrameCounter = 0;
                             yield return null;
                         }
+                        runThisFrameCounter++;
                     }
                 }
-                runThisFrameCounter++;
             }
         }
         if (foundPath)

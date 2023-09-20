@@ -61,9 +61,9 @@ public class Greedy : MonoBehaviour
                             runThisFrameCounter = 0;
                             yield return null;
                         }
+                        runThisFrameCounter++;
                     }
                 }
-                runThisFrameCounter++;
             }
         }
         if (foundPath)

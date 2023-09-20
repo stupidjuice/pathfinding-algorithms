@@ -58,9 +58,9 @@ public class BreadthFirstSearch : MonoBehaviour
                             runThisFrameCounter = 0;
                             yield return null;
                         }
+                        runThisFrameCounter++;
                     }
                 }
-                runThisFrameCounter++;
             }
         }
 
