@@ -36,7 +36,8 @@ public class GridManager : MonoBehaviour
     public Camera cam;
     public float extraOrthoScale = 1.0f;
 
-    private Node lastExploredNode;
+    public List<Node> lastExploredNodes;
+    public bool updateToRed;
 
     public void GenerateGrid()
     {
@@ -81,7 +82,7 @@ public class GridManager : MonoBehaviour
 
     public void DeleteGrid()
     {
-        lastExploredNode = null;
+        lastExploredNodes.Clear();
         squareRenderers = null;
         currentGrid = null;
         foreach(Transform child in parent)
@@ -123,20 +124,30 @@ public class GridManager : MonoBehaviour
 
     public void UpdateNode(int x, int y, NodeType type)
     {
+        if(updateToRed)
+        {
+            foreach (Node node in lastExploredNodes)
+            {
+                squareRenderers[node.x, node.y].color = exploredColor;
+            }
+            lastExploredNodes.Clear();
+            updateToRed = false;
+        }
         currentGrid[x, y].type = type;
         if (type == NodeType.Explored)
         {
-            if(lastExploredNode != null)
-            {
-                squareRenderers[lastExploredNode.x, lastExploredNode.y].color = exploredColor;
-            }
             squareRenderers[x, y].color = lastExplored;
-            lastExploredNode = currentGrid[x, y];
+            lastExploredNodes.Add(currentGrid[x, y]);
         }
         else
         {
             squareRenderers[x, y].color = gridColors[type];
         } 
+    }
+
+    private void LateUpdate()
+    {
+        updateToRed = true;
     }
 
     private void Start()
