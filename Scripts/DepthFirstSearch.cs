@@ -8,8 +8,11 @@ public class DepthFirstSearch : MonoBehaviour
     public UILogicHandler gUI;
 
     private int runThisFrameCounter = 0;
+
+    public Stats stats;
     public IEnumerator DFSVisualizer(Node[,] grid, Node root, Node goal)
     {
+        stats.StartSearch("A*");
         bool foundPath = false;
         Stack<Node> stack = new Stack<Node>();
         root.type = GridManager.NodeType.Explored;
@@ -27,6 +30,7 @@ public class DepthFirstSearch : MonoBehaviour
                 {
                     if (neighbor.type != GridManager.NodeType.Explored)
                     {
+                        stats.explored++;
                         //updates the colors of the nodes around the square
                         //this serves no actual pathfinding function, but makes the visualization a bit easier to understand
                         foreach (Node neighbor2 in g.Get4Neighbors(neighbor))
@@ -36,6 +40,9 @@ public class DepthFirstSearch : MonoBehaviour
 
                         neighbor.parent = v;
                         stack.Push(neighbor);
+
+                        float distToEnd = Distance(neighbor, goal);
+                        if (distToEnd < stats.closest) { stats.closest = distToEnd; }
 
                         if (neighbor == goal)
                         {
@@ -65,8 +72,10 @@ public class DepthFirstSearch : MonoBehaviour
                 
             if (foundPath)
             {
+                stats.Stop();
                 while (traceback != root)
                 {
+                    stats.shortestPath += Distance(traceback, traceback.parent);
                     if(traceback != root && traceback != goal)
                     {
                         g.UpdateNode(traceback.x, traceback.y, GridManager.NodeType.Path);
@@ -82,5 +91,9 @@ public class DepthFirstSearch : MonoBehaviour
                 }
             }
         }
+    }
+    public float Distance(Node from, Node to)
+    {
+        return Mathf.Sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
     }
 }

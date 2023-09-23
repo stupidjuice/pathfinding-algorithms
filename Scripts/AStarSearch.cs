@@ -8,10 +8,12 @@ public class AStarSearch : MonoBehaviour
 {
     public GridManager g;
     public UILogicHandler gUI;
+    public Stats stats;
 
     private int runThisFrameCounter;
     public IEnumerator AStar(Node[,] grid, Node root, Node goal, bool is8Directional)
     {
+        stats.StartSearch("A*");
         bool foundPath = false;
         PriorityQueue pq = new PriorityQueue();
         root.type = GridManager.NodeType.Explored;
@@ -29,12 +31,16 @@ public class AStarSearch : MonoBehaviour
                 {
                     if (neighbor.type != GridManager.NodeType.Explored)
                     {
+                        stats.explored++;
                         //updates the colors of the nodes around the square
                         //this serves no actual pathfinding function, but makes the visualization a bit easier to understand
                         foreach (Node neighbor2 in is8Directional ? g.GetNeighbors(neighbor) : g.Get4Neighbors(neighbor))
                         {
                             if (neighbor2.type == GridManager.NodeType.Unexplored) { g.squareRenderers[neighbor2.x, neighbor2.y].color = g.neigborColor; }
                         }
+
+                        neighbor.hCost = Distance(goal, neighbor);
+                        if (neighbor.hCost < stats.closest) { stats.closest = neighbor.hCost; }
 
                         if (neighbor == goal)
                         {
@@ -43,8 +49,6 @@ public class AStarSearch : MonoBehaviour
                             pq.heap.Clear();
                             break;
                         }
-
-                        neighbor.hCost = Distance(goal, neighbor);
 
                         float tentativeGCost = v.gCost + Distance(v, neighbor);
                         if (tentativeGCost < neighbor.gCost)
@@ -73,8 +77,10 @@ public class AStarSearch : MonoBehaviour
         }
         if (foundPath)
         {
+            stats.Stop();
             while (traceback != root)
             {
+                stats.shortestPath += Distance(traceback, traceback.parent);
                 if (traceback != root)
                 {
                     g.UpdateNode(traceback.x, traceback.y, GridManager.NodeType.Path);

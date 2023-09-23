@@ -9,10 +9,12 @@ public class Greedy : MonoBehaviour
     public UILogicHandler gUI;
     private int runThisFrameCounter = 0;
 
+    public Stats stats;
+
     public IEnumerator GreedyBestFirstSearch(Node[,] grid, Node root, Node goal, bool is8Directional)
     {
+        stats.StartSearch("A*");
         bool foundPath = false;
-        Vector2 goalCoordinate = new Vector2(goal.x, goal.y);
         PriorityQueue pq = new PriorityQueue();
         root.type = GridManager.NodeType.Explored;
         pq.Enqueue(root);
@@ -29,12 +31,16 @@ public class Greedy : MonoBehaviour
                 {
                     if (neighbor.type != GridManager.NodeType.Explored)
                     {
+                        stats.explored++;
                         //updates the colors of the nodes around the square
                         //this serves no actual pathfinding function, but makes the visualization a bit easier to understand
                         foreach (Node neighbor2 in is8Directional ? g.GetNeighbors(neighbor) : g.Get4Neighbors(neighbor))
                         {
                             if (neighbor2.type == GridManager.NodeType.Unexplored) { g.squareRenderers[neighbor2.x, neighbor2.y].color = g.neigborColor; }
                         }
+
+                        neighbor.fCost = Distance(neighbor, goal);
+                        if (neighbor.fCost < stats.closest) { stats.closest = neighbor.fCost; }
 
                         if (neighbor == goal)
                         {
@@ -43,8 +49,6 @@ public class Greedy : MonoBehaviour
                             pq.heap.Clear();
                             break;
                         }
-
-                        neighbor.fCost = Vector2.Distance(new Vector2(neighbor.x, neighbor.y), goalCoordinate);
 
                         neighbor.parent = v;
                         pq.Enqueue(neighbor);
@@ -68,8 +72,10 @@ public class Greedy : MonoBehaviour
         }
         if (foundPath)
         {
+            stats.Stop();
             while (traceback != root)
             {
+                stats.shortestPath += Distance(traceback, traceback.parent);
                 if (traceback != root)
                 {
                     g.UpdateNode(traceback.x, traceback.y, GridManager.NodeType.Path);
@@ -84,5 +90,10 @@ public class Greedy : MonoBehaviour
                 runThisFrameCounter++;
             }
         }
+    }
+
+    public float Distance(Node from, Node to)
+    {
+        return Mathf.Sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
     }
 }

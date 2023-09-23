@@ -25,6 +25,9 @@ public class UILogicHandler : MonoBehaviour
     public float timeSinceLastPressedEnter;
     public float timeBetweenEnterPressThreshold;
 
+    public Toggle showStats;
+    public SwitchUIMode uIMode;
+
     public void Generate()
     {
         int width = 0, height = 0;
@@ -71,6 +74,12 @@ public class UILogicHandler : MonoBehaviour
     }
     public void StartPathfind()
     {
+        if(showStats.isOn)
+        {
+            uIMode.HideAllUI();
+            uIMode.ShowUIElement(uIMode.stats);
+        }
+
         saver.Save("BEFORE_PATHFIND_START", g.currentGrid);
         switch(pathfindAlgOption.value)
         {

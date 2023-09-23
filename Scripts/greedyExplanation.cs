@@ -37,7 +37,7 @@ public class greedyExplanation : GridManager
                             return neighbor;
                         }
 
-                        neighbor.hCost = Vector2.Distance(new Vector2(neighbor.x, neighbor.y), goalCoordinate);
+                        neighbor.hCost = Distance(neighbor, goal);
                         neighbor.type = NodeType.Explored;
                         neighbor.parent = v;
                         pq.Enqueue(neighbor);
@@ -51,5 +51,9 @@ public class greedyExplanation : GridManager
     void nyaaaaa()
     {
         GreedyBestFirstSearch(new Node[5, 5], new Node(NodeType.Unexplored, 0, 0), new Node(NodeType.Unexplored, 0, 0));
+    }
+    public float Distance(Node from, Node to)
+    {
+        return Mathf.Sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
     }
 }

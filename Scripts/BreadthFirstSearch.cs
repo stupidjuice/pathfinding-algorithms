@@ -1,5 +1,7 @@
+using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.WebSockets;
 using UnityEngine;
 
 public class BreadthFirstSearch : MonoBehaviour
@@ -8,8 +10,11 @@ public class BreadthFirstSearch : MonoBehaviour
     public UILogicHandler gUI;
     private int runThisFrameCounter = 0;
 
+    public Stats stats;
+
     public IEnumerator BFSVisualizer(Node[,] grid, Node root, Node goal)
     {
+        stats.StartSearch("A*");
         bool foundPath = false;
         Queue<Node> queue = new Queue<Node>();
         root.type = GridManager.NodeType.Explored;
@@ -28,6 +33,7 @@ public class BreadthFirstSearch : MonoBehaviour
                 {
                     if (neighbor.type != GridManager.NodeType.Explored)
                     {
+                        stats.explored++;
                         //updates the colors of the nodes around the square
                         //this serves no actual pathfinding function, but makes the visualization a bit easier to understand
                         foreach (Node neighbor2 in g.Get4Neighbors(neighbor))
@@ -37,6 +43,9 @@ public class BreadthFirstSearch : MonoBehaviour
                         neighbor.parent = v;
                         queue.Enqueue(neighbor);
 
+                        float distToEnd = Distance(neighbor, goal);
+                        if (distToEnd < stats.closest) { stats.closest = distToEnd; }
+
                         if (neighbor == goal)
                         {
                             //yippe! path was found
@@ -45,6 +54,7 @@ public class BreadthFirstSearch : MonoBehaviour
                             queue.Clear();
                             break;
                         }
+
 
                         //prevents the start node from changing color so it will always be shown and never turn red
                         if (neighbor != goal || neighbor.type != GridManager.NodeType.Root)
@@ -66,8 +76,10 @@ public class BreadthFirstSearch : MonoBehaviour
 
         if (foundPath)
         {
+            stats.Stop();
             while (traceback != root)
             {
+                stats.shortestPath += Distance(traceback, traceback.parent);
                 if (traceback != root)
                 {
                     g.UpdateNode(traceback.x, traceback.y, GridManager.NodeType.Path);
@@ -82,5 +94,10 @@ public class BreadthFirstSearch : MonoBehaviour
                 runThisFrameCounter++;
             }
         }
+    }
+
+    public float Distance(Node from, Node to)
+    {
+        return Mathf.Sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
     }
 }
