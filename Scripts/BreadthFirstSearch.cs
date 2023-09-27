@@ -14,7 +14,7 @@ public class BreadthFirstSearch : MonoBehaviour
 
     public IEnumerator BFSVisualizer(Node[,] grid, Node root, Node goal)
     {
-        stats.StartSearch("A*");
+        stats.StartSearch("BFS");
         bool foundPath = false;
         Queue<Node> queue = new Queue<Node>();
         root.type = GridManager.NodeType.Explored;
@@ -50,7 +50,7 @@ public class BreadthFirstSearch : MonoBehaviour
                         {
                             //yippe! path was found
                             foundPath = true;
-                            traceback = neighbor.parent;
+                            traceback = neighbor;
                             queue.Clear();
                             break;
                         }
@@ -80,7 +80,7 @@ public class BreadthFirstSearch : MonoBehaviour
             while (traceback != root)
             {
                 stats.shortestPath += Distance(traceback, traceback.parent);
-                if (traceback != root)
+                if (traceback != root && traceback != goal)
                 {
                     g.UpdateNode(traceback.x, traceback.y, GridManager.NodeType.Path);
                 }
@@ -94,6 +94,8 @@ public class BreadthFirstSearch : MonoBehaviour
                 runThisFrameCounter++;
             }
         }
+
+        gUI.PathfindEnded();
     }
 
     public float Distance(Node from, Node to)

@@ -45,7 +45,7 @@ public class AStarSearch : MonoBehaviour
                         if (neighbor == goal)
                         {
                             foundPath = true;
-                            traceback = v;
+                            traceback = neighbor;
                             pq.heap.Clear();
                             break;
                         }
@@ -81,7 +81,7 @@ public class AStarSearch : MonoBehaviour
             while (traceback != root)
             {
                 stats.shortestPath += Distance(traceback, traceback.parent);
-                if (traceback != root)
+                if (traceback != root && traceback != goal)
                 {
                     g.UpdateNode(traceback.x, traceback.y, GridManager.NodeType.Path);
                 }
@@ -95,6 +95,8 @@ public class AStarSearch : MonoBehaviour
                 runThisFrameCounter++;
             }
         }
+
+        gUI.PathfindEnded();
     }
 
     public float Distance(Node from, Node to)

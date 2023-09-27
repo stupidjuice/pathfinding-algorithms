@@ -12,7 +12,7 @@ public class DepthFirstSearch : MonoBehaviour
     public Stats stats;
     public IEnumerator DFSVisualizer(Node[,] grid, Node root, Node goal)
     {
-        stats.StartSearch("A*");
+        stats.StartSearch("DFS");
         bool foundPath = false;
         Stack<Node> stack = new Stack<Node>();
         root.type = GridManager.NodeType.Explored;
@@ -91,6 +91,8 @@ public class DepthFirstSearch : MonoBehaviour
                 }
             }
         }
+
+        gUI.PathfindEnded();
     }
     public float Distance(Node from, Node to)
     {

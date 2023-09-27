@@ -145,6 +145,16 @@ public class GridManager : MonoBehaviour
         } 
     }
 
+    public void UpdateRed()
+    {
+        foreach (Node node in lastExploredNodes)
+        {
+            squareRenderers[node.x, node.y].color = exploredColor;
+        }
+        lastExploredNodes.Clear();
+        updateToRed = false;
+    }
+
     private void LateUpdate()
     {
         updateToRed = true;

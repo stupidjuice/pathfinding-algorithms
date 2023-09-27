@@ -11,7 +11,6 @@ public class astarExplanation : GridManager
 {
     public Node AStar(Node[,] grid, Node root, Node goal)
     {
-        Vector2 goalCoordinate = new Vector2(goal.x, goal.y);
         PriorityQueue pq = new PriorityQueue();
         root.type = NodeType.Explored;
         pq.Enqueue(root);

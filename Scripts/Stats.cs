@@ -44,4 +44,11 @@ public class Stats : MonoBehaviour
         shortestPathText.text = shortestPathStarter + shortestPath.ToString("#.#") +"un";
         isSearching = false;
     }
+
+    public void ResetStats()
+    {
+        explored = 0;
+        closest = float.PositiveInfinity;
+        shortestPath = 1;
+    }
 }

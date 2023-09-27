@@ -13,7 +13,7 @@ public class Greedy : MonoBehaviour
 
     public IEnumerator GreedyBestFirstSearch(Node[,] grid, Node root, Node goal, bool is8Directional)
     {
-        stats.StartSearch("A*");
+        stats.StartSearch("Greedy");
         bool foundPath = false;
         PriorityQueue pq = new PriorityQueue();
         root.type = GridManager.NodeType.Explored;
@@ -45,7 +45,7 @@ public class Greedy : MonoBehaviour
                         if (neighbor == goal)
                         {
                             foundPath = true;
-                            traceback = v;
+                            traceback = neighbor;
                             pq.heap.Clear();
                             break;
                         }
@@ -76,7 +76,7 @@ public class Greedy : MonoBehaviour
             while (traceback != root)
             {
                 stats.shortestPath += Distance(traceback, traceback.parent);
-                if (traceback != root)
+                if (traceback != root && traceback != goal)
                 {
                     g.UpdateNode(traceback.x, traceback.y, GridManager.NodeType.Path);
                 }
@@ -90,6 +90,8 @@ public class Greedy : MonoBehaviour
                 runThisFrameCounter++;
             }
         }
+
+        gUI.PathfindEnded();
     }
 
     public float Distance(Node from, Node to)

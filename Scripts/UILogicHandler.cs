@@ -9,7 +9,7 @@ public class UILogicHandler : MonoBehaviour
 {
     public GridManager g;
     public TMP_InputField wInput, hInput;
-    public Button mazeDrawMode, setStartButton, setGoalButton, generateButton, deleteButton;
+    public Button mazeDrawMode, setStartButton, setGoalButton, generateButton, deleteButton, resetStats, resetMaze;
     public TMP_Text speedLabel;
     public TMP_Dropdown pathfindAlgOption;
     public Slider simSpeedSlider;
@@ -74,6 +74,13 @@ public class UILogicHandler : MonoBehaviour
     }
     public void StartPathfind()
     {
+        mazeDrawMode.interactable = false;
+        setStartButton.interactable = false;
+        setGoalButton.interactable = false;
+        deleteButton.interactable = false;
+        resetStats.interactable = false;
+        resetMaze.interactable = false;
+
         if(showStats.isOn)
         {
             uIMode.HideAllUI();
@@ -120,5 +127,17 @@ public class UILogicHandler : MonoBehaviour
     public void ResetPathfind()
     {
         saver.Load("BEFORE_PATHFIND_START");
+    }
+
+    public void PathfindEnded()
+    {
+        g.UpdateRed();
+
+        mazeDrawMode.interactable = true;
+        setStartButton.interactable = true;
+        setGoalButton.interactable = true;
+        deleteButton.interactable = true;
+        resetStats.interactable = true;
+        resetMaze.interactable = true;
     }
 }
