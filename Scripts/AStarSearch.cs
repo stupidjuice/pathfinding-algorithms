@@ -42,14 +42,6 @@ public class AStarSearch : MonoBehaviour
                         neighbor.hCost = Distance(goal, neighbor);
                         if (neighbor.hCost < stats.closest) { stats.closest = neighbor.hCost; }
 
-                        if (neighbor == goal)
-                        {
-                            foundPath = true;
-                            traceback = neighbor;
-                            pq.heap.Clear();
-                            break;
-                        }
-
                         float tentativeGCost = v.gCost + Distance(v, neighbor);
                         if (tentativeGCost < neighbor.gCost)
                         {
@@ -62,6 +54,14 @@ public class AStarSearch : MonoBehaviour
                                 pq.Enqueue(neighbor);
                             }
                             g.UpdateNode(neighbor.x, neighbor.y, GridManager.NodeType.Explored);
+                        }
+
+                        if (neighbor == goal)
+                        {
+                            foundPath = true;
+                            traceback = neighbor;
+                            pq.heap.Clear();
+                            break;
                         }
 
                         //delays the yield return null until simSpeed nodes were explored (lets us control the speed of the simulation)

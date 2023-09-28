@@ -42,6 +42,8 @@ public class Greedy : MonoBehaviour
                         neighbor.fCost = Distance(neighbor, goal);
                         if (neighbor.fCost < stats.closest) { stats.closest = neighbor.fCost; }
 
+                        neighbor.parent = v;
+
                         if (neighbor == goal)
                         {
                             foundPath = true;
@@ -50,7 +52,6 @@ public class Greedy : MonoBehaviour
                             break;
                         }
 
-                        neighbor.parent = v;
                         pq.Enqueue(neighbor);
 
                         //prevents the start node from changing color so it will always be shown and never turn red
@@ -72,6 +73,7 @@ public class Greedy : MonoBehaviour
         }
         if (foundPath)
         {
+            Debug.Log("found path yay");
             stats.Stop();
             while (traceback != root)
             {
