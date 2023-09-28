@@ -53,7 +53,7 @@ public class AStarSearch : MonoBehaviour
                             {
                                 pq.Enqueue(neighbor);
                             }
-                            g.UpdateNode(neighbor.x, neighbor.y, GridManager.NodeType.Explored);
+                            if(neighbor != goal) { g.UpdateNode(neighbor.x, neighbor.y, GridManager.NodeType.Explored); }
                         }
 
                         if (neighbor == goal)
