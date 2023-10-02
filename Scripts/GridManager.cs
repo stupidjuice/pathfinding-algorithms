@@ -20,6 +20,13 @@ public class GridManager : MonoBehaviour
         Goal
     }
 
+    public enum DistanceMetric
+    {
+        Absolute,
+        Manhattan,
+        Chebyshev
+    }
+
     public struct NodeInfo
     {
         public float hCost;
@@ -153,6 +160,22 @@ public class GridManager : MonoBehaviour
         }
         lastExploredNodes.Clear();
         updateToRed = false;
+    }
+
+    public float Distance(Node from, Node to, DistanceMetric metric)
+    {
+        if (metric == DistanceMetric.Absolute)
+        {
+            return Mathf.Sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
+        }
+        else if (metric == DistanceMetric.Manhattan)
+        {
+            return Mathf.Abs(from.x - to.x) + Mathf.Abs(from.y - to.y);
+        }
+        else
+        {
+            return Mathf.Max(Mathf.Abs(from.x - to.x), Mathf.Abs(from.y - to.y));
+        }
     }
 
     private void LateUpdate()

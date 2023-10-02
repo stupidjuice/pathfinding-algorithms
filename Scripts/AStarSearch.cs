@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Resources;
 using UnityEngine;
+using UnityEngine.Rendering;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class AStarSearch : MonoBehaviour
@@ -11,7 +12,7 @@ public class AStarSearch : MonoBehaviour
     public Stats stats;
 
     private int runThisFrameCounter;
-    public IEnumerator AStar(Node[,] grid, Node root, Node goal, bool is8Directional)
+    public IEnumerator AStar(Node[,] grid, Node root, Node goal, bool is8Directional, GridManager.DistanceMetric metric)
     {
         stats.StartSearch("A*");
         bool foundPath = false;
@@ -39,10 +40,10 @@ public class AStarSearch : MonoBehaviour
                             if (neighbor2.type == GridManager.NodeType.Unexplored) { g.squareRenderers[neighbor2.x, neighbor2.y].color = g.neigborColor; }
                         }
 
-                        neighbor.hCost = Distance(goal, neighbor);
+                        neighbor.hCost = g.Distance(goal, neighbor, metric);
                         if (neighbor.hCost < stats.closest) { stats.closest = neighbor.hCost; }
 
-                        float tentativeGCost = v.gCost + Distance(v, neighbor);
+                        float tentativeGCost = v.gCost + g.Distance(v, neighbor, metric);
                         if (tentativeGCost < neighbor.gCost)
                         {
                             neighbor.parent = v;
@@ -80,7 +81,7 @@ public class AStarSearch : MonoBehaviour
             stats.Stop();
             while (traceback != root)
             {
-                stats.shortestPath += Distance(traceback, traceback.parent);
+                stats.shortestPath += g.Distance(traceback, traceback.parent, GridManager.DistanceMetric.Absolute);
                 if (traceback != root && traceback != goal)
                 {
                     g.UpdateNode(traceback.x, traceback.y, GridManager.NodeType.Path);
@@ -97,10 +98,5 @@ public class AStarSearch : MonoBehaviour
         }
 
         gUI.PathfindEnded();
-    }
-
-    public float Distance(Node from, Node to)
-    {
-        return Mathf.Sqrt((from.x -  to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
     }
 }

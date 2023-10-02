@@ -91,22 +91,22 @@ public class UILogicHandler : MonoBehaviour
         switch(pathfindAlgOption.value)
         {
             case 0:
-                StartCoroutine(dfs.DFSVisualizer(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y]));
+                StartCoroutine(dfs.DFSVisualizer(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], GridManager.DistanceMetric.Absolute));
                 break;
             case 1:
-                StartCoroutine(bfs.BFSVisualizer(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y]));
+                StartCoroutine(bfs.BFSVisualizer(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], GridManager.DistanceMetric.Absolute));
                 break;
             case 2:
-                StartCoroutine(greedyfs.GreedyBestFirstSearch(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], false));
+                StartCoroutine(greedyfs.GreedyBestFirstSearch(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], false, GridManager.DistanceMetric.Absolute));
                 break;
             case 3:
-                StartCoroutine(greedyfs.GreedyBestFirstSearch(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], true));
+                StartCoroutine(greedyfs.GreedyBestFirstSearch(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], true, GridManager.DistanceMetric.Absolute));
                 break;
             case 4:
-                StartCoroutine(astar.AStar(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], false));
+                StartCoroutine(astar.AStar(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], false, GridManager.DistanceMetric.Manhattan));
                 break;
             case 5:
-                StartCoroutine(astar.AStar(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], true));
+                StartCoroutine(astar.AStar(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], true, GridManager.DistanceMetric.Absolute));
                 break;
         }
     }

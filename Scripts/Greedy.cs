@@ -11,7 +11,7 @@ public class Greedy : MonoBehaviour
 
     public Stats stats;
 
-    public IEnumerator GreedyBestFirstSearch(Node[,] grid, Node root, Node goal, bool is8Directional)
+    public IEnumerator GreedyBestFirstSearch(Node[,] grid, Node root, Node goal, bool is8Directional, GridManager.DistanceMetric metric)
     {
         stats.StartSearch("Greedy");
         bool foundPath = false;
@@ -39,7 +39,7 @@ public class Greedy : MonoBehaviour
                             if (neighbor2.type == GridManager.NodeType.Unexplored) { g.squareRenderers[neighbor2.x, neighbor2.y].color = g.neigborColor; }
                         }
 
-                        neighbor.fCost = Distance(neighbor, goal);
+                        neighbor.fCost = g.Distance(neighbor, goal, metric);
                         if (neighbor.fCost < stats.closest) { stats.closest = neighbor.fCost; }
 
                         neighbor.parent = v;
@@ -77,7 +77,7 @@ public class Greedy : MonoBehaviour
             stats.Stop();
             while (traceback != root)
             {
-                stats.shortestPath += Distance(traceback, traceback.parent);
+                stats.shortestPath += g.Distance(traceback, traceback.parent, GridManager.DistanceMetric.Absolute);
                 if (traceback != root && traceback != goal)
                 {
                     g.UpdateNode(traceback.x, traceback.y, GridManager.NodeType.Path);
@@ -94,10 +94,5 @@ public class Greedy : MonoBehaviour
         }
 
         gUI.PathfindEnded();
-    }
-
-    public float Distance(Node from, Node to)
-    {
-        return Mathf.Sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
     }
 }
