@@ -8,4 +8,4 @@ Algorithms:
 * A* (4 and 8 directional)
 
 #### Installation
-Sadly, there are currently no release builds, but the project is at a stage I would call "finished" so you can download the source and build it yourself. You can also wait until the future, as I will eventually release a build when I feel like it lol
+
