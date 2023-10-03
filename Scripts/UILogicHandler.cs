@@ -11,7 +11,7 @@ public class UILogicHandler : MonoBehaviour
     public TMP_InputField wInput, hInput;
     public Button mazeDrawMode, setStartButton, setGoalButton, generateButton, deleteButton, resetStats, resetMaze;
     public TMP_Text speedLabel;
-    public TMP_Dropdown pathfindAlgOption;
+    public TMP_Dropdown pathfindAlgOption, metricDropdown;
     public Slider simSpeedSlider;
     public DrawMaze drawMaze;
     public int simSpeed;
@@ -27,6 +27,8 @@ public class UILogicHandler : MonoBehaviour
 
     public Toggle showStats;
     public SwitchUIMode uIMode;
+
+    public GridManager.DistanceMetric metric;
 
     public void Generate()
     {
@@ -88,25 +90,39 @@ public class UILogicHandler : MonoBehaviour
         }
 
         saver.Save("BEFORE_PATHFIND_START", g.currentGrid);
+
+        switch(metricDropdown.value)
+        {
+            case 0:
+                metric = GridManager.DistanceMetric.Absolute;
+                break;
+            case 1:
+                metric = GridManager.DistanceMetric.Manhattan;
+                break;
+            case 2:
+                metric = GridManager.DistanceMetric.Chebyshev; 
+                break;
+        }
+
         switch(pathfindAlgOption.value)
         {
             case 0:
-                StartCoroutine(dfs.DFSVisualizer(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], GridManager.DistanceMetric.Absolute));
+                StartCoroutine(dfs.DFSVisualizer(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], metric));
                 break;
             case 1:
-                StartCoroutine(bfs.BFSVisualizer(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], GridManager.DistanceMetric.Absolute));
+                StartCoroutine(bfs.BFSVisualizer(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], metric));
                 break;
             case 2:
-                StartCoroutine(greedyfs.GreedyBestFirstSearch(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], false, GridManager.DistanceMetric.Absolute));
+                StartCoroutine(greedyfs.GreedyBestFirstSearch(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], false, metric));
                 break;
             case 3:
-                StartCoroutine(greedyfs.GreedyBestFirstSearch(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], true, GridManager.DistanceMetric.Absolute));
+                StartCoroutine(greedyfs.GreedyBestFirstSearch(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], true, metric));
                 break;
             case 4:
-                StartCoroutine(astar.AStar(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], false, GridManager.DistanceMetric.Manhattan));
+                StartCoroutine(astar.AStar(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], false, metric));
                 break;
             case 5:
-                StartCoroutine(astar.AStar(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], true, GridManager.DistanceMetric.Absolute));
+                StartCoroutine(astar.AStar(g.currentGrid, g.currentGrid[g.startCoord.x, g.startCoord.y], g.currentGrid[g.endCoord.x, g.endCoord.y], true, metric));
                 break;
         }
     }

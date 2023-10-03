@@ -20,6 +20,7 @@ public class GridManager : MonoBehaviour
         Goal
     }
 
+    [System.Serializable]
     public enum DistanceMetric
     {
         Absolute,
