@@ -8,4 +8,4 @@ Algorithms:
 * A* (4 and 8 directional)
 
 #### Installation
-
+Version 1.0 is available for download [here](https://github.com/stupidjuice/pathfinding-algorithms/releases/tag/v1.0-pre). There are probably lots of bugs but eh.
